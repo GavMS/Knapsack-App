@@ -1,15 +1,5 @@
-const items = [
-  { name: 'Buku Algoritma', weight: 3, value: 25 },
-  { name: 'Laptop', weight: 5, value: 65 },
-  { name: 'Botol Minum', weight: 2, value: 15 },
-  { name: 'Jaket', weight: 4, value: 40 },
-  { name: 'Power Bank', weight: 1, value: 20 },
-  { name: 'Headset', weight: 2, value: 30 },
-  { name: 'Kamera', weight: 6, value: 70 },
-  { name: 'Snack', weight: 1, value: 10 },
-];
-
-const capacity = 10;
+const readline = require('readline/promises');
+const { stdin: input, stdout: output } = require('process');
 
 function solveKnapsack(inputItems, maxWeight) {
   const sortedItems = inputItems.map((item, index) => ({ ...item, originalIndex: index }));
@@ -98,5 +88,30 @@ function printResult(result) {
   console.log(`Waktu Eksekusi: ${result.executionTime.toFixed(3)} ms`);
 }
 
-const result = solveKnapsack(items, capacity);
-printResult(result);
+async function main() {
+  const rl = readline.createInterface({ input, output });
+
+  console.log('=== Input Data Knapsack ===');
+  const capacityInput = await rl.question('Masukkan kapasitas maksimal Knapsack: ');
+  const capacity = parseInt(capacityInput);
+
+  const itemCountInput = await rl.question('Masukkan jumlah barang: ');
+  const itemCount = parseInt(itemCountInput);
+
+  const items = [];
+  for (let i = 0; i < itemCount; i++) {
+    console.log(`\nBarang ke-${i + 1}:`);
+    const name = await rl.question('Nama barang: ');
+    const weight = parseInt(await rl.question('Berat: '));
+    const value = parseInt(await rl.question('Value: '));
+    items.push({ name, weight, value });
+  }
+
+  rl.close();
+
+  console.log('\n--- Hasil Perhitungan ---\n');
+  const result = solveKnapsack(items, capacity);
+  printResult(result);
+}
+
+main().catch((err) => console.error(err));
