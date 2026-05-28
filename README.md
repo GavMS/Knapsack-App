@@ -12,12 +12,10 @@ node knapsack.js
 
 ## Isi Program
 
-Program sudah berisi contoh minimal 8 item dengan atribut:
-- nama
-- berat
-- value
-
-Selain itu, program juga menyimpan kapasitas maksimum knapsack (`W`) di dalam file.
+Program mengambil input dari pengguna secara interaktif melalui konsol saat dijalankan. Pengguna akan diminta untuk memasukkan:
+- Kapasitas maksimal Knapsack
+- Jumlah barang
+- Atribut detail setiap barang berupa nama, berat, dan value
 
 ## Output
 
