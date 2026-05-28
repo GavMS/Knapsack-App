@@ -15,7 +15,7 @@ node knapsack.js
 Program mengambil input dari pengguna secara interaktif melalui konsol saat dijalankan. Pengguna akan diminta untuk memasukkan:
 - Kapasitas maksimal Knapsack
 - Jumlah barang
-- Atribut detail setiap barang berupa nama, berat, dan value
+- Atribut detail setiap barang berupa nama, berat, dan profit
 
 ## Output
 
@@ -23,7 +23,7 @@ Saat dijalankan, program menampilkan:
 - daftar barang
 - kombinasi optimal
 - total berat
-- total value maksimum
+- total profit maksimum
 - jumlah node yang dikunjungi
 - waktu eksekusi
 
@@ -31,7 +31,7 @@ Saat dijalankan, program menampilkan:
 
 Pruning yang dipakai ada dua:
 - berhenti jika berat melebihi kapasitas
-- berhenti jika value terbaik yang mungkin dari sisa item tidak bisa mengalahkan solusi terbaik saat ini
+- berhenti jika profit terbaik yang mungkin dari sisa item tidak bisa mengalahkan solusi terbaik saat ini
 
 ## Catatan
 

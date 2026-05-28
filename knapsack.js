@@ -3,26 +3,26 @@ const { stdin: input, stdout: output } = require('process');
 
 function solveKnapsack(inputItems, maxWeight) {
   const sortedItems = inputItems.map((item, index) => ({ ...item, originalIndex: index }));
-  const suffixValue = new Array(sortedItems.length + 1).fill(0);
+  const suffixProfit = new Array(sortedItems.length + 1).fill(0);
 
   for (let index = sortedItems.length - 1; index >= 0; index -= 1) {
-    suffixValue[index] = suffixValue[index + 1] + sortedItems[index].value;
+    suffixProfit[index] = suffixProfit[index + 1] + sortedItems[index].profit;
   }
 
-  let bestValue = 0;
+  let bestProfit = 0;
   let bestWeight = 0;
   let bestChoice = [];
   let nodesVisited = 0;
 
-  function dfs(index, currentWeight, currentValue, chosenIndices) {
+  function dfs(index, currentWeight, currentProfit, chosenIndices) {
     nodesVisited += 1;
 
     if (currentWeight > maxWeight) {
       return;
     }
 
-    if (currentValue > bestValue) {
-      bestValue = currentValue;
+    if (currentProfit > bestProfit) {
+      bestProfit = currentProfit;
       bestWeight = currentWeight;
       bestChoice = chosenIndices.slice();
     }
@@ -31,8 +31,8 @@ function solveKnapsack(inputItems, maxWeight) {
       return;
     }
 
-    const optimisticValue = currentValue + suffixValue[index];
-    if (optimisticValue <= bestValue) {
+    const optimisticProfit = currentProfit + suffixProfit[index];
+    if (optimisticProfit <= bestProfit) {
       return;
     }
 
@@ -40,12 +40,12 @@ function solveKnapsack(inputItems, maxWeight) {
     dfs(
       index + 1,
       currentWeight + sortedItems[index].weight,
-      currentValue + sortedItems[index].value,
+      currentProfit + sortedItems[index].profit,
       chosenIndices,
     );
     chosenIndices.pop();
 
-    dfs(index + 1, currentWeight, currentValue, chosenIndices);
+    dfs(index + 1, currentWeight, currentProfit, chosenIndices);
   }
 
   const startTime = process.hrtime.bigint();
@@ -59,7 +59,7 @@ function solveKnapsack(inputItems, maxWeight) {
     capacity: maxWeight,
     selectedItems,
     totalWeight: bestWeight,
-    totalValue: bestValue,
+    totalProfit: bestProfit,
     nodesVisited,
     executionTime,
   };
@@ -69,7 +69,7 @@ function printResult(result) {
   console.log('Daftar Barang:');
   result.items.forEach((item, index) => {
     console.log(
-      `${index + 1}. ${item.name} | berat: ${item.weight} | value: ${item.value}`,
+      `${index + 1}. ${item.name} | berat: ${item.weight} | profit: ${item.profit}`,
     );
   });
 
@@ -83,7 +83,7 @@ function printResult(result) {
   }
 
   console.log(`Total Berat: ${result.totalWeight}`);
-  console.log(`Total Value Maksimum: ${result.totalValue}`);
+  console.log(`Total Profit Maksimum: ${result.totalProfit}`);
   console.log(`Jumlah Node yang Dikunjungi: ${result.nodesVisited}`);
   console.log(`Waktu Eksekusi: ${result.executionTime.toFixed(3)} ms`);
 }
@@ -103,8 +103,8 @@ async function main() {
     console.log(`\nBarang ke-${i + 1}:`);
     const name = await rl.question('Nama barang: ');
     const weight = parseInt(await rl.question('Berat: '));
-    const value = parseInt(await rl.question('Value: '));
-    items.push({ name, weight, value });
+    const profit = parseInt(await rl.question('Profit: '));
+    items.push({ name, weight, profit });
   }
 
   rl.close();

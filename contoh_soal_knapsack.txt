@@ -1,0 +1,41 @@
+=== Case 1: Standard Problem ===
+Kapasitas Knapsack: 50
+Jumlah barang: 3
+Barang 1 - Nama: A, Berat: 10, Profit: 60
+Barang 2 - Nama: B, Berat: 20, Profit: 100
+Barang 3 - Nama: C, Berat: 30, Profit: 120
+(Kunci Jawaban Optimal: B & C, Total Berat: 50, Total Profit: 220)
+
+=== Case 2: Kasus Dimana Greedy Bukan yang Terbaik ===
+Kapasitas Knapsack: 10
+Jumlah barang: 4
+Barang 1 - Nama: B1, Berat: 5, Profit: 10
+Barang 2 - Nama: B2, Berat: 4, Profit: 40
+Barang 3 - Nama: B3, Berat: 6, Profit: 30
+Barang 4 - Nama: B4, Berat: 3, Profit: 50
+(Kunci Jawaban Optimal: B2 & B4, Total Berat: 7, Total Profit: 90)
+
+=== Case 3: Semua Barang Muat (Kapasitas Berlebih) ===
+Kapasitas Knapsack: 20
+Jumlah barang: 3
+Barang 1 - Nama: X, Berat: 5, Profit: 10
+Barang 2 - Nama: Y, Berat: 5, Profit: 15
+Barang 3 - Nama: Z, Berat: 5, Profit: 20
+(Kunci Jawaban Optimal: X, Y, & Z, Total Berat: 15, Total Profit: 45)
+
+=== Case 4: Tidak Ada Barang yang Muat ===
+Kapasitas Knapsack: 5
+Jumlah barang: 2
+Barang 1 - Nama: M1, Berat: 10, Profit: 100
+Barang 2 - Nama: M2, Berat: 15, Profit: 200
+(Kunci Jawaban Optimal: Tidak ada item yang dipilih, Total Berat: 0, Total Profit: 0)
+
+=== Case 5: Banyak Kombinasi Ringan ===
+Kapasitas Knapsack: 15
+Jumlah barang: 5
+Barang 1 - Nama: I1, Berat: 12, Profit: 4
+Barang 2 - Nama: I2, Berat: 2, Profit: 2
+Barang 3 - Nama: I3, Berat: 1, Profit: 2
+Barang 4 - Nama: I4, Berat: 1, Profit: 1
+Barang 5 - Nama: I5, Berat: 4, Profit: 10
+(Kunci Jawaban Optimal: I2, I3, I4, I5, Total Berat: 8, Total Profit: 15)
