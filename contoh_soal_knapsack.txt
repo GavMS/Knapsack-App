@@ -1,41 +1,187 @@
-=== Case 1: Standard Problem ===
-Kapasitas Knapsack: 50
-Jumlah barang: 3
-Barang 1 - Nama: A, Berat: 10, Profit: 60
-Barang 2 - Nama: B, Berat: 20, Profit: 100
-Barang 3 - Nama: C, Berat: 30, Profit: 120
-(Kunci Jawaban Optimal: B & C, Total Berat: 50, Total Profit: 220)
+=== Case 1: Toko Elektronik ===
+Kapasitas Knapsack (W): 30
+Jumlah Barang: 9
 
-=== Case 2: Kasus Dimana Greedy Bukan yang Terbaik ===
-Kapasitas Knapsack: 10
-Jumlah barang: 4
-Barang 1 - Nama: B1, Berat: 5, Profit: 10
-Barang 2 - Nama: B2, Berat: 4, Profit: 40
-Barang 3 - Nama: B3, Berat: 6, Profit: 30
-Barang 4 - Nama: B4, Berat: 3, Profit: 50
-(Kunci Jawaban Optimal: B2 & B4, Total Berat: 7, Total Profit: 90)
+Daftar Barang:
+No | Nama        | Berat | Profit
+---|-------------|-------|-------
+ 1 | Laptop      |  12   | 1500
+ 2 | Smartphone  |   5   |  800
+ 3 | Tablet      |  10   |  700
+ 4 | Smartwatch  |   3   |  350
+ 5 | Headphone   |   4   |  300
+ 6 | Kamera      |   8   |  900
+ 7 | Charger     |   1   |  100
+ 8 | Power Bank  |   2   |  200
+ 9 | Keyboard    |   3   |  250
 
-=== Case 3: Semua Barang Muat (Kapasitas Berlebih) ===
-Kapasitas Knapsack: 20
-Jumlah barang: 3
-Barang 1 - Nama: X, Berat: 5, Profit: 10
-Barang 2 - Nama: Y, Berat: 5, Profit: 15
-Barang 3 - Nama: Z, Berat: 5, Profit: 20
-(Kunci Jawaban Optimal: X, Y, & Z, Total Berat: 15, Total Profit: 45)
+Kombinasi Optimal:
+- Laptop
+- Smartphone
+- Kamera
+- Smartwatch
+- Power Bank
 
-=== Case 4: Tidak Ada Barang yang Muat ===
-Kapasitas Knapsack: 5
-Jumlah barang: 2
-Barang 1 - Nama: M1, Berat: 10, Profit: 100
-Barang 2 - Nama: M2, Berat: 15, Profit: 200
-(Kunci Jawaban Optimal: Tidak ada item yang dipilih, Total Berat: 0, Total Profit: 0)
+Total Berat            : 30
+Total Profit Maksimum  : 3750
+Jumlah Node Dikunjungi : (hasil eksekusi program)
+Waktu Eksekusi         : (hasil eksekusi program)
 
-=== Case 5: Banyak Kombinasi Ringan ===
-Kapasitas Knapsack: 15
-Jumlah barang: 5
-Barang 1 - Nama: I1, Berat: 12, Profit: 4
-Barang 2 - Nama: I2, Berat: 2, Profit: 2
-Barang 3 - Nama: I3, Berat: 1, Profit: 2
-Barang 4 - Nama: I4, Berat: 1, Profit: 1
-Barang 5 - Nama: I5, Berat: 4, Profit: 10
-(Kunci Jawaban Optimal: I2, I3, I4, I5, Total Berat: 8, Total Profit: 15)
+====================================================================
+
+=== Case 2: Belanja Supermarket (Greedy Bukan yang Terbaik) ===
+Kapasitas Knapsack (W): 20
+Jumlah Barang: 8
+
+Daftar Barang:
+No | Nama    | Berat | Profit
+---|---------|-------|-------
+ 1 | Beras   |   8   |   80
+ 2 | Telur   |   3   |   45
+ 3 | Susu    |   5   |   60
+ 4 | Roti    |   2   |   35
+ 5 | Minyak  |   6   |   70
+ 6 | Gula    |   4   |   50
+ 7 | Kopi    |   1   |   20
+ 8 | Teh     |   1   |   18
+
+Catatan:
+  Greedy by density: Kopi > Teh > Roti > Telur > Gula > Susu
+  => Total Berat: 16, Total Profit: 228
+  DFS (Optimal): Susu + Minyak + Telur + Gula + Kopi + Teh
+  => Jauh lebih baik dari pendekatan greedy!
+
+Kombinasi Optimal:
+- Susu
+- Minyak
+- Telur
+- Gula
+- Kopi
+- Teh
+
+Total Berat            : 20
+Total Profit Maksimum  : 263
+Jumlah Node Dikunjungi : (hasil eksekusi program)
+Waktu Eksekusi         : (hasil eksekusi program)
+
+====================================================================
+
+=== Case 3: Perlengkapan Sekolah (Semua Barang Muat) ===
+Kapasitas Knapsack (W): 100
+Jumlah Barang: 8
+
+Daftar Barang:
+No | Nama        | Berat | Profit
+---|-------------|-------|-------
+ 1 | Buku        |   3   |   30
+ 2 | Pensil      |   1   |   10
+ 3 | Pulpen      |   1   |   15
+ 4 | Penggaris   |   2   |   20
+ 5 | Kalkulator  |   5   |   80
+ 6 | Tas Kecil   |   4   |   40
+ 7 | Rautan      |   1   |    8
+ 8 | Tipe-X      |   1   |   12
+
+Catatan:
+  Total berat seluruh barang = 18, jauh di bawah kapasitas 100.
+  Semua barang akan dipilih sebagai solusi optimal.
+
+Kombinasi Optimal:
+- Buku
+- Pensil
+- Pulpen
+- Penggaris
+- Kalkulator
+- Tas Kecil
+- Rautan
+- Tipe-X
+
+Total Berat            : 18
+Total Profit Maksimum  : 215
+Jumlah Node Dikunjungi : (hasil eksekusi program)
+Waktu Eksekusi         : (hasil eksekusi program)
+
+====================================================================
+
+=== Case 4: Perabot Rumah Tangga (Tidak Ada Barang yang Muat) ===
+Kapasitas Knapsack (W): 5
+Jumlah Barang: 8
+
+Daftar Barang:
+No | Nama          | Berat | Profit
+---|---------------|-------|-------
+ 1 | TV            |  30   | 1500
+ 2 | Kulkas        |  50   | 2000
+ 3 | Mesin Cuci    |  45   | 1800
+ 4 | AC            |  35   | 1600
+ 5 | Komputer      |  20   | 1200
+ 6 | Sofa          |  40   | 1000
+ 7 | Lemari        |  55   |  800
+ 8 | Meja          |  25   |  600
+
+Catatan:
+  Semua barang memiliki berat > kapasitas (5).
+  Tidak ada barang yang dapat dimasukkan ke knapsack.
+
+Kombinasi Optimal:
+- Tidak ada item yang dipilih
+
+Total Berat            : 0
+Total Profit Maksimum  : 0
+Jumlah Node Dikunjungi : (hasil eksekusi program)
+Waktu Eksekusi         : (hasil eksekusi program)
+
+====================================================================
+
+=== Case 5: Packing Perjalanan (Kombinasi Kompleks) ===
+Kapasitas Knapsack (W): 40
+Jumlah Barang: 10
+
+Daftar Barang:
+No | Nama           | Berat | Profit
+---|----------------|-------|-------
+ 1 | Pakaian        |   5   |  100
+ 2 | Laptop         |  15   |  500
+ 3 | Obat-obatan    |   2   |  300
+ 4 | Charger        |   1   |   50
+ 5 | Kamera         |   6   |  400
+ 6 | Buku Panduan   |   3   |   80
+ 7 | Sepatu Extra   |   8   |  150
+ 8 | Toiletries     |   4   |  120
+ 9 | Payung         |   2   |   60
+10 | Makanan        |  10   |  200
+
+Catatan:
+  Total berat semua barang = 56 > 40.
+  DFS dengan pruning menemukan kombinasi 8 item optimal
+  yang tidak bisa ditemukan dengan greedy sederhana.
+
+Kombinasi Optimal:
+- Laptop
+- Obat-obatan
+- Charger
+- Kamera
+- Pakaian
+- Buku Panduan
+- Toiletries
+- Payung
+
+Total Berat            : 38
+Total Profit Maksimum  : 1610
+Jumlah Node Dikunjungi : (hasil eksekusi program)
+Waktu Eksekusi         : (hasil eksekusi program)
+
+====================================================================
+RINGKASAN SEMUA KASUS
+====================================================================
+No | Nama Case                   | W   | Barang | Profit Maks
+---|-----------------------------| ----|--------|------------
+ 1 | Toko Elektronik             |  30 |   9    |   3750
+ 2 | Supermarket (Greedy Gagal)  |  20 |   8    |    263
+ 3 | Semua Muat (Kapasitas Besar)|  100|   8    |    215
+ 4 | Tidak Ada Muat              |   5 |   8    |      0
+ 5 | Packing Perjalanan          |  40 |  10    |   1610
+====================================================================
+, I5, Total Berat: 8, Total Profit: 15)
+, I5, Total Berat: 8, Total Profit: 15)
+, I5, Total Berat: 8, Total Profit: 15)
