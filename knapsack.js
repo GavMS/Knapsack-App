@@ -1,5 +1,4 @@
-const readline = require('readline/promises');
-const { stdin: input, stdout: output } = require('process');
+// Knapsack 0/1 Solver - Dual environment (Node.js & Browser)
 
 function solveKnapsack(inputItems, maxWeight) {
   const sortedItems = inputItems.map((item, index) => ({ ...item, originalIndex: index }));
@@ -48,9 +47,16 @@ function solveKnapsack(inputItems, maxWeight) {
     dfs(index + 1, currentWeight, currentProfit, chosenIndices);
   }
 
-  const startTime = process.hrtime.bigint();
-  dfs(0, 0, 0, []);
-  const executionTime = Number(process.hrtime.bigint() - startTime) / 1e6;
+  let startTime, executionTime;
+  if (typeof process !== 'undefined' && process.hrtime && process.hrtime.bigint) {
+    startTime = process.hrtime.bigint();
+    dfs(0, 0, 0, []);
+    executionTime = Number(process.hrtime.bigint() - startTime) / 1e6;
+  } else {
+    startTime = performance.now();
+    dfs(0, 0, 0, []);
+    executionTime = performance.now() - startTime;
+  }
 
   const selectedItems = bestChoice.map((index) => sortedItems[index]);
 
@@ -88,30 +94,46 @@ function printResult(result) {
   console.log(`Waktu Eksekusi: ${result.executionTime.toFixed(3)} ms`);
 }
 
-async function main() {
-  const rl = readline.createInterface({ input, output });
-
-  console.log('=== Input Data Knapsack ===');
-  const capacityInput = await rl.question('Masukkan kapasitas maksimal Knapsack: ');
-  const capacity = parseInt(capacityInput);
-
-  const itemCountInput = await rl.question('Masukkan jumlah barang: ');
-  const itemCount = parseInt(itemCountInput);
-
-  const items = [];
-  for (let i = 0; i < itemCount; i++) {
-    console.log(`\nBarang ke-${i + 1}:`);
-    const name = await rl.question('Nama barang: ');
-    const weight = parseInt(await rl.question('Berat: '));
-    const profit = parseInt(await rl.question('Profit: '));
-    items.push({ name, weight, profit });
-  }
-
-  rl.close();
-
-  console.log('\n--- Hasil Perhitungan ---\n');
-  const result = solveKnapsack(items, capacity);
-  printResult(result);
+// Expose solver globally in browser
+if (typeof window !== 'undefined') {
+  window.solveKnapsack = solveKnapsack;
 }
 
-main().catch((err) => console.error(err));
+// Node.js CLI entrypoint
+if (typeof require !== 'undefined' && require.main === module) {
+  const readline = require('readline/promises');
+  const { stdin: input, stdout: output } = require('process');
+
+  async function main() {
+    const rl = readline.createInterface({ input, output });
+
+    console.log('=== Input Data Knapsack ===');
+    const capacityInput = await rl.question('Masukkan kapasitas maksimal Knapsack: ');
+    const capacity = parseInt(capacityInput);
+
+    const itemCountInput = await rl.question('Masukkan jumlah barang: ');
+    const itemCount = parseInt(itemCountInput);
+
+    const items = [];
+    for (let i = 0; i < itemCount; i++) {
+      console.log(`\nBarang ke-${i + 1}:`);
+      const name = await rl.question('Nama barang: ');
+      const weight = parseInt(await rl.question('Berat: '));
+      const profit = parseInt(await rl.question('Profit: '));
+      items.push({ name, weight, profit });
+    }
+
+    rl.close();
+
+    console.log('\n--- Hasil Perhitungan ---\n');
+    const result = solveKnapsack(items, capacity);
+    printResult(result);
+  }
+
+  main().catch((err) => console.error(err));
+}
+
+// Export as Node.js module if supported
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = { solveKnapsack, printResult };
+}

@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Knapsack 0/1 Backtracking Visualizer (MetroUI)</title>
+    <style>
+        /* Metro UI Design System Variables */
+        :root {
+            --bg-color: #f3f3f3;
+            --fg-color: #111111;
+            --subtext-color: #555555;
+            --border-color: #cccccc;
+            --border-focus: #0078d7;
+
+            /* Metro Solid Colors */
+            --metro-blue: #0078d7;
+            --metro-green: #107c41;
+            --metro-teal: #008272;
+            --metro-red: #a80000;
+            --metro-orange: #d83b01;
+            --metro-purple: #5c2d91;
+            --metro-dark-gray: #252526;
+            --metro-light-gray: #333333;
+            --metro-white-gray: #dbdbdb;
+
+            /* Light Theme Specific Components */
+            --panel-bg: #ffffff;
+            --input-bg: #ffffff;
+            --input-fg: #111111;
+            --input-border: #ababab;
+            --item-card-bg: #f9f9f9;
+            --bar-bg: #e1e1e1;
+            --btn-secondary-bg: #e1e1e1;
+            --btn-secondary-fg: #111111;
+            --empty-bg: #fafafa;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            border-radius: 0 !important;
+            /* Force completely square corners for MetroUI */
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--fg-color);
+            font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+            padding: 24px;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Metro Header */
+        header {
+            margin-bottom: 24px;
+            border-bottom: 4px solid var(--metro-blue);
+            padding-bottom: 12px;
+        }
+
+        header h1 {
+            font-size: 2.4rem;
+            font-weight: 300;
+            letter-spacing: -1px;
+            text-transform: lowercase;
+            color: var(--fg-color);
+        }
+
+        header p {
+            color: var(--subtext-color);
+            font-size: 0.95rem;
+            margin-top: 4px;
+        }
+
+        /* Preset Cases Section */
+        .presets-container {
+            margin-bottom: 24px;
+        }
+
+        .presets-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--subtext-color);
+        }
+
+        .presets-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 8px;
+        }
+
+        .preset-tile {
+            border: none;
+            padding: 12px;
+            color: #ffffff;
+            font-weight: 600;
+            text-align: left;
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 90px;
+            outline: 2px solid transparent;
+            transition: outline 0.1s ease-in-out;
+        }
+
+        .preset-tile:hover {
+            outline: 2px solid var(--fg-color);
+        }
+
+        .preset-tile:active {
+            transform: scale(0.98);
+        }
+
+        .preset-tile .case-num {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            opacity: 0.7;
+            font-weight: 400;
+        }
+
+        .preset-tile .case-name {
+            font-size: 1rem;
+            font-weight: 700;
+        }
+
+        /* Color assignments for preset tiles */
+        .tile-case1 {
+            background-color: var(--metro-blue);
+        }
+
+        .tile-case2 {
+            background-color: var(--metro-teal);
+        }
+
+        .tile-case3 {
+            background-color: var(--metro-green);
+        }
+
+        .tile-case4 {
+            background-color: var(--metro-red);
+        }
+
+        .tile-case5 {
+            background-color: var(--metro-purple);
+        }
+
+        /* Main Workspace Grid */
+        .workspace-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        @media (min-width: 900px) {
+            .workspace-grid {
+                grid-template-columns: 320px 1fr;
+            }
+        }
+
+        /* Column Styles */
+        .control-column {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .main-column {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* Metro Panels */
+        .metro-panel {
+            background-color: var(--panel-bg);
+            border: 2px solid var(--border-color);
+            padding: 20px;
+        }
+
+        .panel-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            border-left: 4px solid var(--metro-blue);
+            padding-left: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        /* Forms & Inputs */
+        .form-group {
+            margin-bottom: 14px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.8rem;
+            margin-bottom: 4px;
+            color: var(--subtext-color);
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .metro-input {
+            width: 100%;
+            padding: 8px 10px;
+            background-color: var(--input-bg);
+            border: 2px solid var(--input-border);
+            color: var(--input-fg);
+            font-family: inherit;
+            font-size: 0.95rem;
+        }
+
+        .metro-input:focus {
+            outline: none;
+            border-color: var(--border-focus);
+            background-color: var(--input-bg);
+        }
+
+        .metro-btn {
+            width: 100%;
+            padding: 10px;
+            background-color: var(--metro-blue);
+            border: none;
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: background-color 0.1s ease-in-out;
+        }
+
+        .metro-btn:hover {
+            background-color: #005a9e;
+            outline: 2px solid var(--fg-color);
+        }
+
+        .metro-btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .metro-btn.btn-danger {
+            background-color: var(--metro-red);
+        }
+
+        .metro-btn.btn-danger:hover {
+            background-color: #800000;
+        }
+
+        .metro-btn.btn-secondary {
+            background-color: var(--btn-secondary-bg);
+            color: var(--btn-secondary-fg);
+            border: 1px solid var(--border-color);
+        }
+
+        .metro-btn.btn-secondary:hover {
+            background-color: #d0d0d0;
+            outline: 2px solid var(--fg-color);
+        }
+
+        /* Result Dashboard Layout */
+        .results-dashboard {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        @media (min-width: 600px) {
+            .results-dashboard {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        .stat-tile {
+            padding: 12px;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 80px;
+        }
+
+        .stat-tile .stat-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            opacity: 0.8;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-tile .stat-value {
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .tile-profit {
+            background-color: var(--metro-green);
+        }
+
+        .tile-weight {
+            background-color: var(--metro-orange);
+        }
+
+        .tile-nodes {
+            background-color: var(--metro-purple);
+        }
+
+        .tile-time {
+            background-color: var(--metro-teal);
+        }
+
+        /* Capacity Visualizer */
+        .capacity-bar-container {
+            margin-bottom: 20px;
+        }
+
+        .capacity-bar-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .capacity-bar-bg {
+            background-color: var(--bar-bg);
+            height: 24px;
+            width: 100%;
+            border: 2px solid var(--border-color);
+        }
+
+        .capacity-bar-fill {
+            height: 100%;
+            width: 0%;
+            transition: width 0.2s ease-in-out;
+        }
+
+        .capacity-bar-fill.normal {
+            background-color: var(--metro-blue);
+        }
+
+        .capacity-bar-fill.full {
+            background-color: var(--metro-green);
+        }
+
+        .capacity-bar-fill.over {
+            background-color: var(--metro-red);
+        }
+
+        /* Item Grid UI */
+        .items-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+            gap: 8px;
+        }
+
+        .item-card {
+            background-color: var(--item-card-bg);
+            border: 2px solid var(--border-color);
+            padding: 12px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100px;
+        }
+
+        .item-card.selected {
+            border-color: var(--metro-green);
+            background-color: rgba(16, 124, 65, 0.2);
+            outline: 2px solid var(--metro-green);
+        }
+
+        .item-card.selected::before {
+            content: "TERPILIH";
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: var(--metro-green);
+            color: #ffffff;
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 1px 6px;
+            letter-spacing: 0.5px;
+        }
+
+        .item-card .item-name {
+            font-weight: 700;
+            font-size: 1rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding-right: 15px;
+            text-transform: uppercase;
+        }
+
+        .item-card .item-details {
+            font-size: 0.8rem;
+            color: var(--subtext-color);
+            margin-top: 4px;
+        }
+
+        .item-card .item-details strong {
+            color: var(--fg-color);
+        }
+
+        .item-card .delete-btn {
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+            background-color: transparent;
+            color: var(--metro-red);
+            border: 2px solid var(--metro-red);
+            width: 22px;
+            height: 22px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.75rem;
+        }
+
+        .item-card .delete-btn:hover {
+            background-color: var(--metro-red);
+            color: #ffffff;
+        }
+
+        /* Empty state */
+        .empty-state {
+            padding: 40px 20px;
+            text-align: center;
+            color: var(--subtext-color);
+            border: 2px dashed var(--border-color);
+            background-color: var(--empty-bg);
+            font-size: 0.95rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <h1>knapsack 0/1 backtracking</h1>
+            <p>visualisasi penyelesaian permasalahan knapsack menggunakan dfs backtracking dengan pruning</p>
+        </header>
+
+        <!-- Presets Section -->
+        <section class="presets-container">
+            <div class="presets-title">Pilih Preset Kasus Soal</div>
+            <div class="presets-grid">
+                <button class="preset-tile tile-case1" onclick="loadPreset('case1')">
+                    <span class="case-num">KASUS 1</span>
+                    <span class="case-name">Standard (C=50)</span>
+                </button>
+                <button class="preset-tile tile-case2" onclick="loadPreset('case2')">
+                    <span class="case-num">KASUS 2</span>
+                    <span class="case-name">Greedy Gagal (C=10)</span>
+                </button>
+                <button class="preset-tile tile-case3" onclick="loadPreset('case3')">
+                    <span class="case-num">KASUS 3</span>
+                    <span class="case-name">Muat Semua (C=20)</span>
+                </button>
+                <button class="preset-tile tile-case4" onclick="loadPreset('case4')">
+                    <span class="case-num">KASUS 4</span>
+                    <span class="case-name">Tidak Muat (C=5)</span>
+                </button>
+                <button class="preset-tile tile-case5" onclick="loadPreset('case5')">
+                    <span class="case-num">KASUS 5</span>
+                    <span class="case-name">Ringan (C=15)</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- Main Workspace Grid -->
+        <div class="workspace-grid">
+
+            <!-- Left Column: Input controls -->
+            <aside class="control-column">
+                <!-- Knapsack Capacity Panel -->
+                <div class="metro-panel">
+                    <div class="panel-title">Kapasitas Knapsack</div>
+                    <div class="form-group">
+                        <label for="capacityInput">Kapasitas Maksimal (W)</label>
+                        <input type="number" id="capacityInput" class="metro-input" min="0" value="50">
+                    </div>
+                </div>
+
+                <!-- Add Item Panel -->
+                <div class="metro-panel">
+                    <div class="panel-title">Tambah Barang</div>
+                    <form id="addItemForm">
+                        <div class="form-group">
+                            <label for="itemNameInput">Nama Barang</label>
+                            <input type="text" id="itemNameInput" class="metro-input" placeholder="Contoh: Barang A"
+                                required>
+                        </div>
+                        <div class="form-group">
+                            <label for="itemWeightInput">Berat (Weight)</label>
+                            <input type="number" id="itemWeightInput" class="metro-input" min="1"
+                                placeholder="Contoh: 10" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="itemProfitInput">Profit / Nilai</label>
+                            <input type="number" id="itemProfitInput" class="metro-input" min="1"
+                                placeholder="Contoh: 100" required>
+                        </div>
+                        <button type="submit" class="metro-btn">Tambah ke List</button>
+                    </form>
+
+                    <div class="btn-row">
+                        <button class="metro-btn btn-secondary" onclick="clearItems()">Clear All</button>
+                        <button class="metro-btn btn-secondary" onclick="resetDefaults()">Reset</button>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Right Column: Visualization & Results -->
+            <main class="main-column">
+                <!-- Results Dashboard Tiles -->
+                <section class="results-dashboard">
+                    <div class="stat-tile tile-profit">
+                        <span class="stat-label">Total Profit</span>
+                        <span id="statProfit" class="stat-value">0</span>
+                    </div>
+                    <div class="stat-tile tile-weight">
+                        <span class="stat-label">Total Berat</span>
+                        <span id="statWeight" class="stat-value">0 / 50</span>
+                    </div>
+                    <div class="stat-tile tile-nodes">
+                        <span class="stat-label">Node Dikunjungi</span>
+                        <span id="statNodes" class="stat-value">0</span>
+                    </div>
+                    <div class="stat-tile tile-time">
+                        <span class="stat-label">Waktu Eksekusi</span>
+                        <span id="statTime" class="stat-value">0.000 ms</span>
+                    </div>
+                </section>
+
+                <!-- Knapsack Visual Fill Gauge -->
+                <section class="metro-panel">
+                    <div class="panel-title">Kapasitas Knapsack Terpakai</div>
+                    <div class="capacity-bar-container">
+                        <div class="capacity-bar-label">
+                            <span>Status Pengisian</span>
+                            <span id="barText">0 / 50 kg (0%)</span>
+                        </div>
+                        <div class="capacity-bar-bg">
+                            <div id="barFill" class="capacity-bar-fill normal"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Item List panel -->
+                <section class="metro-panel">
+                    <div class="panel-title">Daftar Barang & Hasil Pemilihan</div>
+                    <div id="emptyState" class="empty-state">
+                        Belum ada barang. Masukkan barang melalui form atau klik salah satu preset kasus soal di atas.
+                    </div>
+                    <div id="itemsContainer" class="items-grid">
+                        <!-- Item cards will be rendered dynamically -->
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <!-- Load core Knapsack solver -->
+    <script src="knapsack.js"></script>
+
+    <!-- Web UI application logic -->
+    <script>
+        // Initial state
+        let items = [];
+        let capacity = 50;
+
+        // Presets from contoh_soal_knapsack.txt
+        const presets = {
+            case1: {
+                capacity: 50,
+                items: [
+                    { name: "A", weight: 10, profit: 60 },
+                    { name: "B", weight: 20, profit: 100 },
+                    { name: "C", weight: 30, profit: 120 }
+                ]
+            },
+            case2: {
+                capacity: 10,
+                items: [
+                    { name: "B1", weight: 5, profit: 10 },
+                    { name: "B2", weight: 4, profit: 40 },
+                    { name: "B3", weight: 6, profit: 30 },
+                    { name: "B4", weight: 3, profit: 50 }
+                ]
+            },
+            case3: {
+                capacity: 20,
+                items: [
+                    { name: "X", weight: 5, profit: 10 },
+                    { name: "Y", weight: 5, profit: 15 },
+                    { name: "Z", weight: 5, profit: 20 }
+                ]
+            },
+            case4: {
+                capacity: 5,
+                items: [
+                    { name: "M1", weight: 10, profit: 100 },
+                    { name: "M2", weight: 15, profit: 200 }
+                ]
+            },
+            case5: {
+                capacity: 15,
+                items: [
+                    { name: "I1", weight: 12, profit: 4 },
+                    { name: "I2", weight: 2, profit: 2 },
+                    { name: "I3", weight: 1, profit: 2 },
+                    { name: "I4", weight: 1, profit: 1 },
+                    { name: "I5", weight: 4, profit: 10 }
+                ]
+            }
+        };
+
+        // DOM References
+        const capacityInput = document.getElementById('capacityInput');
+        const itemNameInput = document.getElementById('itemNameInput');
+        const itemWeightInput = document.getElementById('itemWeightInput');
+        const itemProfitInput = document.getElementById('itemProfitInput');
+        const itemsContainer = document.getElementById('itemsContainer');
+        const emptyState = document.getElementById('emptyState');
+        const addItemForm = document.getElementById('addItemForm');
+
+        // Metrics DOM References
+        const statProfit = document.getElementById('statProfit');
+        const statWeight = document.getElementById('statWeight');
+        const statNodes = document.getElementById('statNodes');
+        const statTime = document.getElementById('statTime');
+
+        // Capacity visualizer DOM References
+        const barFill = document.getElementById('barFill');
+        const barText = document.getElementById('barText');
+
+        function init() {
+            // Load preset 1 by default
+            loadPreset('case1');
+
+            // Add Item Listener
+            addItemForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                const name = itemNameInput.value.trim();
+                const weight = parseInt(itemWeightInput.value);
+                const profit = parseInt(itemProfitInput.value);
+
+                if (name && !isNaN(weight) && !isNaN(profit)) {
+                    items.push({ name, weight, profit });
+
+                    // Reset form fields except keeping focus
+                    itemNameInput.value = '';
+                    itemWeightInput.value = '';
+                    itemProfitInput.value = '';
+                    itemNameInput.focus();
+
+                    updateUI();
+                }
+            });
+
+            // Capacity Input Live Listener
+            capacityInput.addEventListener('input', function () {
+                const val = parseInt(capacityInput.value);
+                if (!isNaN(val) && val >= 0) {
+                    capacity = val;
+                    updateUI();
+                }
+            });
+        }
+
+        // Load a preset by name
+        function loadPreset(key) {
+            if (presets[key]) {
+                capacity = presets[key].capacity;
+                items = JSON.parse(JSON.stringify(presets[key].items)); // Deep copy
+                capacityInput.value = capacity;
+                updateUI();
+            }
+        }
+
+        // Clear all items in list
+        function clearItems() {
+            items = [];
+            updateUI();
+        }
+
+        // Reset back to case 1 defaults
+        function resetDefaults() {
+            loadPreset('case1');
+        }
+
+        // Delete a single item
+        function deleteItem(index) {
+            items.splice(index, 1);
+            updateUI();
+        }
+
+        // Re-calculate and redraw UI
+        function updateUI() {
+            let result = null;
+
+            if (typeof window.solveKnapsack === 'function') {
+                result = window.solveKnapsack(items, capacity);
+            } else {
+                console.error("Fungsi solveKnapsack tidak ditemukan di window. Pastikan knapsack.js termuat dengan benar.");
+            }
+
+            // 1. Update Metrics Panel
+            if (result) {
+                statProfit.textContent = result.totalProfit;
+                statWeight.textContent = `${result.totalWeight} / ${capacity}`;
+                statNodes.textContent = result.nodesVisited;
+                statTime.textContent = `${result.executionTime.toFixed(3)} ms`;
+
+                // 2. Update Capacity Visualizer Bar
+                const percentage = capacity > 0 ? Math.min(100, Math.round((result.totalWeight / capacity) * 100)) : 0;
+                barFill.style.width = `${percentage}%`;
+                barText.textContent = `${result.totalWeight} / ${capacity} (${percentage}%)`;
+
+                // Update colors based on fill percentage
+                barFill.className = 'capacity-bar-fill';
+                if (percentage === 100) {
+                    barFill.classList.add('full');
+                } else if (result.totalWeight > capacity) {
+                    barFill.classList.add('over');
+                } else {
+                    barFill.classList.add('normal');
+                }
+            } else {
+                statProfit.textContent = '0';
+                statWeight.textContent = `0 / ${capacity}`;
+                statNodes.textContent = '0';
+                statTime.textContent = '0.000 ms';
+
+                barFill.style.width = '0%';
+                barText.textContent = `0 / ${capacity} (0%)`;
+            }
+
+            // 3. Render Item Grid Cards
+            itemsContainer.innerHTML = '';
+            if (items.length === 0) {
+                emptyState.style.display = 'block';
+            } else {
+                emptyState.style.display = 'none';
+
+                // Collect indices of selected items from solver output
+                const selectedOriginalIndices = new Set();
+                if (result && result.selectedItems) {
+                    result.selectedItems.forEach(item => {
+                        if (item.originalIndex !== undefined) {
+                            selectedOriginalIndices.add(item.originalIndex);
+                        }
+                    });
+                }
+
+                items.forEach((item, index) => {
+                    const isSelected = selectedOriginalIndices.has(index);
+                    const cardElement = document.createElement('div');
+                    cardElement.className = `item-card${isSelected ? ' selected' : ''}`;
+
+                    cardElement.innerHTML = `
+            <div>
+              <div class="item-name" title="${escapeHtml(item.name)}">${escapeHtml(item.name)}</div>
+              <div class="item-details">
+                Berat: <strong>${item.weight}</strong><br>
+                Profit: <strong>${item.profit}</strong>
+              </div>
+            </div>
+            <button type="button" class="delete-btn" onclick="deleteItem(${index})" title="Hapus item">&times;</button>
+          `;
+                    itemsContainer.appendChild(cardElement);
+                });
+            }
+        }
+
+        // Secure HTML string escaping
+        function escapeHtml(str) {
+            const tempDiv = document.createElement('div');
+            tempDiv.textContent = str;
+            return tempDiv.innerHTML;
+        }
+
+        // Initialize application on window load
+        window.onload = init;
+    </script>
+</body>
+
+</html>
