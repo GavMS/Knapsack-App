@@ -7,7 +7,7 @@ File ini berisi implementasi sederhana Knapsack 0/1 menggunakan recursive DFS, p
 Pastikan Node.js sudah terpasang, lalu jalankan:
 
 ```bash
-node knapsack.js
+node js/knapsack.js
 ```
 
 ## Isi Program
