@@ -1,0 +1,110 @@
+.container {
+    max-width: 1300px;
+    margin: 0 auto;
+}
+
+/* Scene (wizard) flow: only the active scene is visible */
+.scene {
+    display: none;
+}
+
+.scene.active {
+    display: block;
+}
+
+.scene-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.scene-nav .metro-btn {
+    width: auto;
+    min-width: 120px;
+    padding: 10px 24px;
+}
+
+.scene-step-indicator {
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--subtext-color);
+    text-align: center;
+}
+
+.scene-body {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Main Workspace Grid */
+.workspace-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+}
+
+@media (min-width: 900px) {
+    .workspace-grid {
+        grid-template-columns: 320px 1fr;
+    }
+}
+
+/* Column Styles */
+.control-column {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.main-column {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Preset Cases Section */
+.presets-container {
+    margin-bottom: 24px;
+}
+
+.presets-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 8px;
+}
+
+/* Result Dashboard Layout */
+.results-dashboard {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+@media (min-width: 600px) {
+    .results-dashboard {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+@media (min-width: 1100px) {
+    .results-dashboard {
+        grid-template-columns: repeat(6, 1fr);
+    }
+}
+
+/* Two Panel Layout for bottom section */
+.split-panels {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+}
+@media (min-width: 1000px) {
+    .split-panels {
+        grid-template-columns: 2fr 1fr;
+    }
+}

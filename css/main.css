@@ -1,0 +1,67 @@
+/* Metro UI Design System Variables */
+:root {
+    --bg-color: #f3f3f3;
+    --fg-color: #111111;
+    --subtext-color: #555555;
+    --border-color: #cccccc;
+    --border-focus: #0078d7;
+
+    /* Metro Solid Colors */
+    --metro-blue: #0078d7;
+    --metro-green: #107c41;
+    --metro-teal: #008272;
+    --metro-red: #a80000;
+    --metro-orange: #d83b01;
+    --metro-purple: #5c2d91;
+    --metro-dark-gray: #252526;
+    --metro-light-gray: #333333;
+    --metro-white-gray: #dbdbdb;
+    --metro-yellow: #ffb900;
+
+    /* Light Theme Specific Components */
+    --panel-bg: #ffffff;
+    --input-bg: #ffffff;
+    --input-fg: #111111;
+    --input-border: #ababab;
+    --item-card-bg: #f9f9f9;
+    --bar-bg: #e1e1e1;
+    --btn-secondary-bg: #e1e1e1;
+    --btn-secondary-fg: #111111;
+    --empty-bg: #fafafa;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    border-radius: 0 !important;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--fg-color);
+    font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+    padding: 24px;
+    line-height: 1.5;
+}
+
+/* Metro Header */
+header {
+    margin-bottom: 24px;
+    border-bottom: 4px solid var(--metro-blue);
+    padding-bottom: 12px;
+}
+
+header h1 {
+    font-size: 2.4rem;
+    font-weight: 300;
+    letter-spacing: -1px;
+    text-transform: lowercase;
+    color: var(--fg-color);
+}
+
+header p {
+    color: var(--subtext-color);
+    font-size: 0.95rem;
+    margin-top: 4px;
+}
