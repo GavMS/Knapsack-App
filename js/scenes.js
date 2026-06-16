@@ -1,12 +1,8 @@
 // Scene (wizard) navigation: only one scene is visible at a time.
 
 const SCENES = [
-    { id: 'scene-setup',     title: 'Problem Setup' },
-    { id: 'scene-overview',  title: 'Problem Overview' },
-    { id: 'scene-execution', title: 'Algorithm Execution' },
-    { id: 'scene-tree',      title: 'Tree Visualization' },
-    { id: 'scene-inspector', title: 'Node Inspector' },
-    { id: 'scene-result',    title: 'Final Result' }
+    { id: 'scene-setup',  title: 'Problem Setup' },
+    { id: 'scene-result', title: 'Solusi Optimal' }
 ];
 
 let currentSceneIndex = 0;
@@ -35,6 +31,7 @@ function goToScene(index) {
     const nextBtn = document.getElementById('sceneNextBtn');
 
     stepIndicator.textContent = `Langkah ${index + 1} dari ${SCENES.length}: ${SCENES[index].title}`;
+    nextBtn.textContent = index === 0 ? 'Selesaikan →' : 'Next →';
     backBtn.disabled = index === 0;
     backBtn.style.visibility = index === 0 ? 'hidden' : 'visible';
     nextBtn.disabled = index === SCENES.length - 1;

@@ -22,8 +22,8 @@
         <!-- Scene Navigation -->
         <nav class="scene-nav">
             <button id="sceneBackBtn" class="metro-btn btn-secondary" onclick="prevScene()">&larr; Back</button>
-            <div id="sceneStepIndicator" class="scene-step-indicator">Langkah 1 dari 6: Problem Setup</div>
-            <button id="sceneNextBtn" class="metro-btn" onclick="nextScene()">Next &rarr;</button>
+            <div id="sceneStepIndicator" class="scene-step-indicator">Langkah 1 dari 2: Problem Setup</div>
+            <button id="sceneNextBtn" class="metro-btn" onclick="nextScene()">Selesaikan &rarr;</button>
         </nav>
 
         <!-- Alert Panel for N < 8 -->
@@ -122,109 +122,34 @@
         </section>
 
         <!-- ============================================= -->
-        <!-- Scene 2: Problem Overview                     -->
+        <!-- Scene 2: Final Result                         -->
         <!-- ============================================= -->
-        <section id="scene-overview" class="scene">
-            <div class="scene-body">
-                <section class="metro-panel">
-                    <div class="panel-title">Ringkasan Permasalahan</div>
-                    <div id="overviewSummary" class="node-details">
-                        <!-- Problem summary rendered dynamically -->
-                    </div>
-                </section>
-
-                <section class="metro-panel">
-                    <div class="panel-title">Daftar Barang (Urut Rasio Profit/Berat)</div>
-                    <div style="font-size: 0.8rem; margin-bottom: 12px; color: var(--subtext-color);">
-                        Urutan ini menentukan urutan pencabangan DFS dan kualitas heuristik bound (Fractional Knapsack).
-                    </div>
-                    <div id="overviewItemsContainer" class="items-grid">
-                        <!-- Read-only item cards rendered dynamically -->
-                    </div>
-                </section>
-            </div>
-        </section>
-
-        <!-- ============================================= -->
-        <!-- Scene 3: Algorithm Execution                  -->
-        <!-- ============================================= -->
-        <section id="scene-execution" class="scene">
-            <div class="scene-body">
-                <section class="results-dashboard" id="metricsDashboard">
-                    <div class="stat-tile tile-nodes">
-                        <span class="stat-label">Total Node Dikunjungi</span>
-                        <span id="statNodes" class="stat-value">0</span>
-                    </div>
-                    <div class="stat-tile tile-pruned-w">
-                        <span class="stat-label">Dipangkas (Kapasitas W)</span>
-                        <span id="statPrunedW" class="stat-value">0</span>
-                    </div>
-                    <div class="stat-tile tile-pruned-b">
-                        <span class="stat-label">Dipangkas (Bound)</span>
-                        <span id="statPrunedB" class="stat-value">0</span>
-                    </div>
-                    <div class="stat-tile tile-time">
-                        <span class="stat-label">Waktu Eksekusi</span>
-                        <span id="statTime" class="stat-value">0.000 ms</span>
-                    </div>
-                </section>
-
-                <section class="metro-panel">
-                    <div class="panel-title">Log Eksekusi DFS</div>
-                    <div id="logContainer" class="execution-log">
-                        <!-- Logs go here -->
-                    </div>
-                </section>
-            </div>
-        </section>
-
-        <!-- ============================================= -->
-        <!-- Scene 4: Tree Visualization                   -->
-        <!-- ============================================= -->
-        <section id="scene-tree" class="scene">
+        <section id="scene-result" class="scene">
             <div class="scene-body" id="visualizationPanels">
+
                 <section class="metro-panel" style="overflow: hidden;">
                     <div class="panel-title">Visualisasi Tree Backtracking</div>
 
                     <div class="legend-box">
                         <div class="legend-item"><div class="legend-color" style="border-color: var(--metro-blue); background: #e6f2fb;"></div> Normal</div>
-                        <div class="legend-item"><div class="legend-color" style="border-color: var(--metro-red); background: #fae6e6;"></div> Batal (Kapasitas Penuh)</div>
-                        <div class="legend-item"><div class="legend-color" style="border-color: var(--metro-orange); background: #fbebe5;"></div> Prune (Bound ≤ Profit)</div>
+                        <div class="legend-item"><div class="legend-color" style="border-color: var(--metro-red); background: #fae6e6;"></div> Batal (Kapasitas)</div>
+                        <div class="legend-item"><div class="legend-color" style="border-color: var(--metro-orange); background: #fbebe5;"></div> Prune (Bound) — <strong>B</strong></div>
                         <div class="legend-item"><div class="legend-color" style="border-color: var(--metro-green); background: #e7f2ec;"></div> Solusi Sementara</div>
-                        <div class="legend-item"><div class="legend-color" style="border-color: var(--metro-green); border-width: 4px; background: #c6e5d3;"></div> Solusi Optimal Akhir</div>
+                        <div class="legend-item"><div class="legend-color" style="border-color: var(--metro-green); border-width: 4px; background: #c6e5d3;"></div> Solusi Optimal</div>
                     </div>
 
-                    <div style="font-size: 0.8rem; margin-bottom: 12px; color: var(--subtext-color);">
-                        Klik salah satu node untuk membukanya di Node Inspector (Langkah 5).
+                    <div class="step-controls">
+                        <button id="stepBackBtn" class="metro-btn btn-secondary" onclick="stepBack()">&#8592; Sebelumnya</button>
+                        <span id="stepIndicator" class="step-indicator">Node 1 dari —</span>
+                        <button id="stepNextBtn" class="metro-btn" onclick="stepForward()">Selanjutnya &#8594;</button>
                     </div>
 
-                    <div class="tree-container-wrapper" id="treeScrollContainer">
+                    <div class="tree-container-wrapper">
                         <div id="treeContainer"></div>
                     </div>
                 </section>
-            </div>
-        </section>
 
-        <!-- ============================================= -->
-        <!-- Scene 5: Node Inspector                       -->
-        <!-- ============================================= -->
-        <section id="scene-inspector" class="scene">
-            <div class="scene-body">
-                <section class="metro-panel">
-                    <div class="panel-title">Detail Node (Pilih di Tree)</div>
-                    <div id="nodeDetailsPanel" class="node-details">
-                        <em style="color: var(--subtext-color);">Klik salah satu node pada Visualisasi Tree (Langkah 4) untuk melihat detail state.</em>
-                    </div>
-                </section>
-            </div>
-        </section>
-
-        <!-- ============================================= -->
-        <!-- Scene 6: Final Result                         -->
-        <!-- ============================================= -->
-        <section id="scene-result" class="scene">
-            <div class="scene-body">
-                <section class="results-dashboard" style="grid-template-columns: repeat(2, 1fr);">
+                <section id="resultStatsPanel" class="results-dashboard result-stats-hidden" style="grid-template-columns: repeat(2, 1fr);">
                     <div class="stat-tile tile-profit">
                         <span class="stat-label">Total Profit (Optimal)</span>
                         <span id="statProfit" class="stat-value">0</span>
@@ -235,21 +160,7 @@
                     </div>
                 </section>
 
-                <!-- Knapsack Visual Fill Gauge -->
-                <section class="metro-panel" id="capacityVisualizer">
-                    <div class="panel-title">Kapasitas Knapsack Terpakai</div>
-                    <div class="capacity-bar-container">
-                        <div class="capacity-bar-label">
-                            <span>Status Pengisian</span>
-                            <span id="barText">0 / 50 kg (0%)</span>
-                        </div>
-                        <div class="capacity-bar-bg">
-                            <div id="barFill" class="capacity-bar-fill normal"></div>
-                        </div>
-                    </div>
-                </section>
-
-                <section class="metro-panel">
+                <section id="resultItemsPanel" class="metro-panel result-end-hidden">
                     <div class="panel-title">Barang Terpilih (Kombinasi Optimal)</div>
                     <div id="resultEmptyState" class="empty-state" style="display: none;">
                         Tidak ada barang yang dipilih dalam solusi optimal.

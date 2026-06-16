@@ -1,7 +1,7 @@
 // Application bootstrap: wires up form/input events and the tree drag-scroll.
 
 function init() {
-    loadPreset('case1');
+    goToScene(0);
 
     addItemForm.addEventListener('submit', function (e) {
         e.preventDefault();
@@ -30,7 +30,6 @@ function init() {
         }
     });
 
-    setupTreeDragScroll(document.getElementById('treeScrollContainer'));
 }
 
 window.onload = init;
