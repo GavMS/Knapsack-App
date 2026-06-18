@@ -33,6 +33,14 @@ function setZoom(value) {
     updateStepUI();
 }
 
+const STATUS_LABEL = {
+    'visited':       'Dikunjungi',
+    'solution':      'Solusi Sementara',
+    'pruned-weight': 'Batal (Kapasitas)',
+    'pruned-bound':  'Prune (Bound)',
+    'leaf':          'Daun (Leaf)',
+};
+
 function updateStepUI() {
     const indicator = document.getElementById('stepIndicator');
     const backBtn = document.getElementById('stepBackBtn');
@@ -61,6 +69,7 @@ function updateStepUI() {
                 wrapper.scrollTop  = pos.y - wrapper.clientHeight / 2;
             }
         }
+        updateNodeInspect(lastResult, currentStep, isLast);
     }
     // Sync zoom UI
     const zoomLabel = document.getElementById('zoomLabel');
@@ -70,6 +79,47 @@ function updateStepUI() {
     // Disable skip-to-end when already at end
     const endBtn = document.getElementById('stepEndBtn');
     if (endBtn) endBtn.disabled = currentStep === totalSteps;
+}
+
+function updateNodeInspect(result, step, isLast) {
+    const elWeight      = document.getElementById('inspectWeight');
+    const elWeightLabel = document.getElementById('inspectWeightLabel');
+    const elProfit      = document.getElementById('inspectProfit');
+    const elProfitLabel = document.getElementById('inspectProfitLabel');
+    const elBest        = document.getElementById('inspectBestProfit');
+    const elStatus      = document.getElementById('inspectStatus');
+    if (!elWeight || !elProfit || !elBest || !elStatus) return;
+
+    if (isLast) {
+        elWeightLabel.textContent = 'Berat Optimal';
+        elProfitLabel.textContent = 'Profit Optimal';
+        elWeight.textContent = `${result.totalWeight} / ${result.capacity}`;
+        elProfit.textContent = result.totalProfit;
+        elBest.textContent   = result.totalProfit;
+        elStatus.textContent = 'Solusi Optimal';
+        elStatus.dataset.status = 'optimal';
+        return;
+    }
+
+    elWeightLabel.textContent = 'Berat Node';
+    elProfitLabel.textContent = 'Profit Node';
+
+    const node = result.treeNodes[step - 1];
+    elWeight.textContent = `${node.weight} / ${result.capacity}`;
+    elProfit.textContent = node.profit;
+
+    // Best profit so far = max profit among solution nodes up to this step
+    let bestSoFar = 0;
+    for (let i = 0; i < step; i++) {
+        if (result.treeNodes[i].status === 'solution' && result.treeNodes[i].profit > bestSoFar) {
+            bestSoFar = result.treeNodes[i].profit;
+        }
+    }
+    elBest.textContent = bestSoFar > 0 ? bestSoFar : '—';
+
+    const statusKey = node.status;
+    elStatus.textContent = STATUS_LABEL[statusKey] || statusKey;
+    elStatus.dataset.status = statusKey;
 }
 
 // DOM References

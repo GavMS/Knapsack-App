@@ -93,9 +93,16 @@ function solveKnapsack(inputItems, maxWeight) {
     }
 
     if (bound <= bestProfit) {
-      node.status = 'pruned-bound';
-      nodesPrunedBound++;
-      addLog(`  -> Dipangkas: Heuristik Bound (${bound.toFixed(2)}) <= Profit Terbaik (${bestProfit})`);
+      // Only mark as pruned-bound if this node did NOT already find a new best solution.
+      // A node can update bestProfit above and then reach here because bound = 0
+      // (weight exactly equals capacity), making it appear pruned when it is actually a solution.
+      if (node.status !== 'solution') {
+        node.status = 'pruned-bound';
+        nodesPrunedBound++;
+        addLog(`  -> Dipangkas: Heuristik Bound (${bound.toFixed(2)}) <= Profit Terbaik (${bestProfit})`);
+      } else {
+        addLog(`  -> Cabang dihentikan: Kapasitas penuh, tidak ada item tersisa yang bisa ditambahkan.`);
+      }
       return;
     }
 
