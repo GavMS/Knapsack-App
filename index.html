@@ -210,6 +210,23 @@
                         <!-- Selected item cards rendered dynamically -->
                     </div>
                 </section>
+
+                <section id="resultExtraStatsPanel" class="results-dashboard result-stats-hidden" style="grid-template-columns: repeat(2, 1fr);">
+                    <div class="stat-tile tile-nodes">
+                        <span class="stat-label">Node Dikunjungi</span>
+                        <span id="statNodesVisited" class="stat-value">0</span>
+                    </div>
+                    <div class="stat-tile tile-time">
+                        <span class="stat-label">Waktu Eksekusi</span>
+                        <span id="statExecTime" class="stat-value">0 ms</span>
+                    </div>
+                </section>
+
+                <section id="resetVisualisasiPanel" class="result-stats-hidden" style="padding-bottom: 8px;">
+                    <button class="metro-btn btn-secondary" onclick="resetVisualisasi()" style="width: auto; padding: 8px 24px;">
+                        &#8635; Ulangi dari Awal
+                    </button>
+                </section>
             </div>
         </section>
     </div>

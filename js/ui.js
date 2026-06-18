@@ -60,6 +60,16 @@ function updateStepUI() {
         itemsPanel.classList.toggle('result-end-hidden', !isLast);
         itemsPanel.classList.toggle('result-end-visible', isLast);
     }
+    const extraStatsPanel = document.getElementById('resultExtraStatsPanel');
+    if (extraStatsPanel) {
+        extraStatsPanel.classList.toggle('result-stats-hidden', !isLast);
+        extraStatsPanel.classList.toggle('result-stats-visible', isLast);
+    }
+    const resetPanel = document.getElementById('resetVisualisasiPanel');
+    if (resetPanel) {
+        resetPanel.classList.toggle('result-stats-hidden', !isLast);
+        resetPanel.classList.toggle('result-stats-visible', isLast);
+    }
     if (lastResult) {
         const pos = renderTree(lastResult.treeNodes, currentStep);
         if (pos) {
@@ -201,6 +211,11 @@ function updateUI() {
         statProfit.textContent = result.totalProfit;
         statWeight.textContent = `${result.totalWeight} / ${capacity}`;
 
+        const statNodes = document.getElementById('statNodesVisited');
+        if (statNodes) statNodes.textContent = result.nodesVisited;
+        const statTime = document.getElementById('statExecTime');
+        if (statTime) statTime.textContent = result.executionTime.toFixed(3) + ' ms';
+
         renderItemCards(result.items, result.selectedItems);
         initSteps(result.treeNodes);
         renderResultItems(result);
@@ -293,4 +308,10 @@ function escapeHtml(str) {
     const tempDiv = document.createElement('div');
     tempDiv.textContent = str;
     return tempDiv.innerHTML;
+}
+
+function resetVisualisasi() {
+    currentStep = 1;
+    updateStepUI();
+    window.scrollTo(0, 0);
 }
