@@ -32,4 +32,16 @@ function init() {
 
 }
 
+function toggleTheme() {
+    const isDark = document.body.classList.toggle('dark');
+    const btn = document.getElementById('themeToggleBtn');
+    if (btn) {
+        btn.innerHTML = isDark
+            ? '<span>&#9788;</span> Light'
+            : '<span>&#9790;</span> Dark';
+    }
+    // Re-render tree so node fills update immediately
+    if (lastResult) renderTree(lastResult.treeNodes, currentStep);
+}
+
 window.onload = init;

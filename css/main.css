@@ -1,67 +1,145 @@
-/* Metro UI Design System Variables */
+/* OpenCode Terminal Mono — Design System */
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+/* ── Light Mode (default) ── */
 :root {
-    --bg-color: #f3f3f3;
-    --fg-color: #111111;
-    --subtext-color: #555555;
-    --border-color: #cccccc;
-    --border-focus: #0078d7;
+    --bg:        #f5f3f3;
+    --surface:   #ffffff;
+    --surface2:  #eeebeb;
 
-    /* Metro Solid Colors */
-    --metro-blue: #0078d7;
-    --metro-green: #107c41;
-    --metro-teal: #008272;
-    --metro-red: #a80000;
-    --metro-orange: #d83b01;
-    --metro-purple: #5c2d91;
-    --metro-dark-gray: #252526;
-    --metro-light-gray: #333333;
-    --metro-white-gray: #dbdbdb;
-    --metro-yellow: #ffb900;
+    --text:      #111010;
+    --muted:     #4f4c4c;
 
-    /* Light Theme Specific Components */
-    --panel-bg: #ffffff;
-    --input-bg: #ffffff;
-    --input-fg: #111111;
-    --input-border: #ababab;
-    --item-card-bg: #f9f9f9;
-    --bar-bg: #e1e1e1;
-    --btn-secondary-bg: #e1e1e1;
-    --btn-secondary-fg: #111111;
-    --empty-bg: #fafafa;
+    --accent:    #007aff;
+    --danger:    #d92b21;
+    --success:   #1e9c3c;
+    --warning:   #c46d00;
+    --purple:    #7b34b5;
+    --teal:      #0083a0;
+
+    --border:    rgba(0,0,0,0.11);
+    --border-strong: #c0bcbc;
+
+    --radius: 4px;
+
+    /* Legacy aliases */
+    --bg-color:          var(--bg);
+    --fg-color:          var(--text);
+    --subtext-color:     var(--muted);
+    --border-color:      var(--border-strong);
+    --border-focus:      var(--accent);
+    --metro-blue:        var(--accent);
+    --metro-green:       var(--success);
+    --metro-teal:        var(--teal);
+    --metro-red:         var(--danger);
+    --metro-orange:      var(--warning);
+    --metro-purple:      var(--purple);
+    --metro-dark-gray:   #1e1b1b;
+    --metro-light-gray:  #d0cccc;
+    --metro-white-gray:  #e0dcdc;
+    --metro-yellow:      #ffb900;
+    --panel-bg:          var(--surface);
+    --input-bg:          var(--surface);
+    --input-fg:          var(--text);
+    --input-border:      var(--border-strong);
+    --item-card-bg:      var(--surface);
+    --bar-bg:            var(--surface2);
+    --btn-secondary-bg:  var(--surface2);
+    --btn-secondary-fg:  var(--text);
+    --empty-bg:          var(--surface);
 }
 
-* {
+/* ── Dark Mode ── */
+body.dark {
+    --bg:        #201d1d;
+    --surface:   #2a2626;
+    --surface2:  #332f2f;
+
+    --text:      #fdfcfc;
+    --muted:     #9a9898;
+
+    --accent:    #007aff;
+    --danger:    #ff3b30;
+    --success:   #30d158;
+    --warning:   #ff9f0a;
+    --purple:    #bf5af2;
+    --teal:      #5ac8fa;
+
+    --border:    rgba(255,255,255,0.08);
+    --border-strong: rgba(255,255,255,0.18);
+
+    --metro-dark-gray:   #141212;
+    --metro-light-gray:  #3a3535;
+    --metro-white-gray:  #4a4545;
+}
+
+*, *::before, *::after {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    border-radius: 0 !important;
 }
 
 body {
-    background-color: var(--bg-color);
-    color: var(--fg-color);
-    font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: 'Berkeley Mono', 'JetBrains Mono', 'Menlo', 'Monaco', 'Consolas', monospace;
     padding: 24px;
-    line-height: 1.5;
+    line-height: 1.6;
+    font-size: 1rem;
+    font-weight: 400;
+    transition: background-color 0.2s, color 0.2s;
 }
 
-/* Metro Header */
+/* Header */
 header {
     margin-bottom: 24px;
-    border-bottom: 4px solid var(--metro-blue);
+    border-bottom: 1px solid var(--accent);
     padding-bottom: 12px;
 }
 
+.header-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+}
+
 header h1 {
-    font-size: 2.4rem;
-    font-weight: 300;
-    letter-spacing: -1px;
+    font-size: clamp(1.4rem, 3vw, 2.2rem);
+    font-weight: 700;
+    letter-spacing: -0.5px;
     text-transform: lowercase;
-    color: var(--fg-color);
+    color: var(--text);
 }
 
 header p {
-    color: var(--subtext-color);
-    font-size: 0.95rem;
+    color: var(--muted);
+    font-size: 0.8rem;
     margin-top: 4px;
+    font-weight: 400;
+}
+
+/* Dark mode toggle button */
+.theme-toggle-btn {
+    flex-shrink: 0;
+    padding: 6px 14px;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius);
+    background-color: var(--surface2);
+    color: var(--muted);
+    font-family: inherit;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    transition: border-color 0.15s, color 0.15s, background-color 0.15s;
+    white-space: nowrap;
+}
+.theme-toggle-btn:hover {
+    border-color: var(--accent);
+    color: var(--text);
 }

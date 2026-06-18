@@ -15,8 +15,15 @@
     <div class="container">
         <!-- Header -->
         <header>
-            <h1>knapsack 0/1 backtracking</h1>
-            <p>visualisasi penyelesaian permasalahan knapsack menggunakan dfs backtracking dengan pruning bound</p>
+            <div class="header-row">
+                <div>
+                    <h1>knapsack 0/1 backtracking</h1>
+                    <p>visualisasi penyelesaian permasalahan knapsack menggunakan dfs backtracking dengan pruning bound</p>
+                </div>
+                <button id="themeToggleBtn" class="theme-toggle-btn" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
+                    <span id="themeIcon">&#9790;</span> Dark
+                </button>
+            </div>
         </header>
 
         <!-- Scene Navigation -->
@@ -92,13 +99,13 @@
                                     <label for="itemProfitInput">Profit / Nilai</label>
                                     <input type="number" id="itemProfitInput" class="metro-input" min="1" placeholder="Contoh: 100" required>
                                 </div>
+                                <div class="form-group">
                                 <button type="submit" class="metro-btn">Tambah ke List</button>
+                                </div>
+                                <div class="form-group">
+                                    <button class="metro-btn btn-secondary" onclick="clearItems()">Clear All</button>
+                                </div>
                             </form>
-
-                            <div class="btn-row">
-                                <button class="metro-btn btn-secondary" onclick="clearItems()">Clear All</button>
-                                <button class="metro-btn btn-secondary" onclick="resetDefaults()">Reset</button>
-                            </div>
                         </div>
                     </aside>
 
@@ -131,11 +138,11 @@
                     <div class="panel-title">Visualisasi Tree Backtracking</div>
 
                     <div class="legend-box">
-                        <div class="legend-item"><div class="legend-color" style="border-color: var(--metro-blue); background: #e6f2fb;"></div> Normal</div>
-                        <div class="legend-item"><div class="legend-color" style="border-color: var(--metro-red); background: #fae6e6;"></div> Batal (Kapasitas)</div>
-                        <div class="legend-item"><div class="legend-color" style="border-color: var(--metro-orange); background: #fbebe5;"></div> Prune (Bound) — <strong>B</strong></div>
-                        <div class="legend-item"><div class="legend-color" style="border-color: var(--metro-green); background: #e7f2ec;"></div> Solusi Sementara</div>
-                        <div class="legend-item"><div class="legend-color" style="border-color: var(--metro-green); border-width: 4px; background: #c6e5d3;"></div> Solusi Optimal</div>
+                        <div class="legend-item"><div class="legend-color legend-normal"></div> Normal</div>
+                        <div class="legend-item"><div class="legend-color legend-pruned-w"></div> Batal (Kapasitas)</div>
+                        <div class="legend-item"><div class="legend-color legend-pruned-b"></div> Prune (Bound) — <strong>B</strong></div>
+                        <div class="legend-item"><div class="legend-color legend-solution"></div> Solusi Sementara</div>
+                        <div class="legend-item"><div class="legend-color legend-optimal"></div> Solusi Optimal</div>
                     </div>
 
                     <div class="step-controls">
