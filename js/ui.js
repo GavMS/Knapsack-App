@@ -23,6 +23,16 @@ function stepBack() {
     if (currentStep > 1) { currentStep--; updateStepUI(); }
 }
 
+function skipToEnd() {
+    currentStep = totalSteps;
+    updateStepUI();
+}
+
+function setZoom(value) {
+    setZoomLevel(Math.round(value));
+    updateStepUI();
+}
+
 function updateStepUI() {
     const indicator = document.getElementById('stepIndicator');
     const backBtn = document.getElementById('stepBackBtn');
@@ -42,7 +52,24 @@ function updateStepUI() {
         itemsPanel.classList.toggle('result-end-hidden', !isLast);
         itemsPanel.classList.toggle('result-end-visible', isLast);
     }
-    if (lastResult) renderTree(lastResult.treeNodes, currentStep);
+    if (lastResult) {
+        const pos = renderTree(lastResult.treeNodes, currentStep);
+        if (pos) {
+            const wrapper = document.querySelector('.tree-container-wrapper');
+            if (wrapper) {
+                wrapper.scrollLeft = pos.x - wrapper.clientWidth  / 2;
+                wrapper.scrollTop  = pos.y - wrapper.clientHeight / 2;
+            }
+        }
+    }
+    // Sync zoom UI
+    const zoomLabel = document.getElementById('zoomLabel');
+    if (zoomLabel) zoomLabel.textContent = Math.round(treeZoom * 100) + '%';
+    const zoomSlider = document.getElementById('zoomSlider');
+    if (zoomSlider) zoomSlider.value = Math.round(treeZoom * 100);
+    // Disable skip-to-end when already at end
+    const endBtn = document.getElementById('stepEndBtn');
+    if (endBtn) endBtn.disabled = currentStep === totalSteps;
 }
 
 // DOM References
@@ -127,6 +154,7 @@ function updateUI() {
         renderItemCards(result.items, result.selectedItems);
         initSteps(result.treeNodes);
         renderResultItems(result);
+        renderItemLegend(result.items);
     }
 }
 
@@ -196,6 +224,18 @@ function renderItemCards(sortedItems, selectedItemsList = []) {
             <button type="button" class="delete-btn" onclick="deleteItem(${oIndex})" title="Hapus item">&times;</button>
         `;
         itemsContainer.appendChild(cardElement);
+    });
+}
+
+function renderItemLegend(sortedItems) {
+    const grid = document.getElementById('itemLegendGrid');
+    if (!grid) return;
+    grid.innerHTML = '';
+    sortedItems.forEach((item, i) => {
+        const cell = document.createElement('div');
+        cell.className = 'legend-var-item';
+        cell.innerHTML = `<span class="legend-var-name">x<sub>${i + 1}</sub></span><span class="legend-var-eq">=</span><span class="legend-var-label">${escapeHtml(item.name)}</span><span class="legend-var-detail">(w=${item.weight}, p=${item.profit})</span>`;
+        grid.appendChild(cell);
     });
 }
 

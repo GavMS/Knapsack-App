@@ -1,9 +1,21 @@
-// SVG tree visualization — circular nodes, step-by-step reveal.
+// SVG tree visualization — circular nodes, step-by-step reveal with zoom & auto-center.
 
+let treeZoom = 1.0;
+const ZOOM_STEP = 0.2;
+const ZOOM_MIN  = 0.3;
+const ZOOM_MAX  = 3.0;
+
+function zoomIn()    { treeZoom = Math.min(+(treeZoom + ZOOM_STEP).toFixed(1), ZOOM_MAX); updateStepUI(); }
+function zoomOut()   { treeZoom = Math.max(+(treeZoom - ZOOM_STEP).toFixed(1), ZOOM_MIN); updateStepUI(); }
+function resetZoom() { treeZoom = 1.0; updateStepUI(); }
+// called by the slider (value is 30–300, representing percent)
+function setZoomLevel(pct) { treeZoom = Math.max(ZOOM_MIN, Math.min(ZOOM_MAX, pct / 100)); }
+
+// Returns {x, y} pixel coords (in zoomed space) of the latest visible node, or null.
 function renderTree(treeNodes, stepCount) {
     const container = document.getElementById('treeContainer');
     container.innerHTML = '';
-    if (!treeNodes || treeNodes.length === 0) return;
+    if (!treeNodes || treeNodes.length === 0) return null;
 
     const count = (stepCount !== undefined) ? stepCount : treeNodes.length;
     const visibleIds = new Set(treeNodes.slice(0, count).map(n => n.id));
@@ -16,7 +28,7 @@ function renderTree(treeNodes, stepCount) {
         if (node.parentId == null) root = map[node.id];
         else if (map[node.parentId]) map[node.parentId].children.push(map[node.id]);
     });
-    if (!root) return;
+    if (!root) return null;
 
     // Tidy tree layout computed over ALL nodes so positions stay stable
     let leafCount = 0, maxDepth = 0;
@@ -36,17 +48,19 @@ function renderTree(treeNodes, stepCount) {
     layout(root, 0);
 
     const R = 25, hS = 80, vS = 110;
+    const PAD_X = 30, PAD_Y = 40;
     const svgW = Math.max(leafCount * hS + 60, 400);
     const svgH = Math.max((maxDepth + 1) * vS + 80, 200);
 
     const svgNS = 'http://www.w3.org/2000/svg';
     const svg = document.createElementNS(svgNS, 'svg');
-    svg.setAttribute('width', svgW);
+    svg.setAttribute('width',  svgW);
     svg.setAttribute('height', svgH);
-    svg.setAttribute('class', 'tree-svg');
+    svg.setAttribute('class',  'tree-svg');
+    svg.style.cssText = `position:absolute;top:0;left:0;transform:scale(${treeZoom});transform-origin:top left;`;
 
     const g = document.createElementNS(svgNS, 'g');
-    g.setAttribute('transform', 'translate(30, 40)');
+    g.setAttribute('transform', `translate(${PAD_X}, ${PAD_Y})`);
     svg.appendChild(g);
 
     // Draw edges first (so they appear behind nodes)
@@ -107,7 +121,6 @@ function renderTree(treeNodes, stepCount) {
         gNode.appendChild(circle);
         gNode.appendChild(idText);
 
-        // "B" marker for pruned nodes (like in slide)
         if (node.status === 'pruned-weight' || node.status === 'pruned-bound') {
             const bText = document.createElementNS(svgNS, 'text');
             bText.setAttribute('x', cx);
@@ -121,5 +134,16 @@ function renderTree(treeNodes, stepCount) {
         g.appendChild(gNode);
     });
 
-    container.appendChild(svg);
+    // Wrapper gives the container the correct scrollable area for the zoomed SVG
+    const wrapper = document.createElement('div');
+    wrapper.style.cssText = `width:${svgW * treeZoom}px;height:${svgH * treeZoom}px;position:relative;`;
+    wrapper.appendChild(svg);
+    container.appendChild(wrapper);
+
+    // Compute zoomed pixel position of the latest visible node for auto-centering
+    const latestNode = map[treeNodes[count - 1].id];
+    return {
+        x: (latestNode.x * hS + R + PAD_X) * treeZoom,
+        y: (latestNode.y * vS + R + PAD_Y) * treeZoom
+    };
 }

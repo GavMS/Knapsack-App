@@ -67,6 +67,108 @@
     font-weight: 600;
 }
 
+/* Step controls — skip button */
+.btn-skip {
+    background: var(--metro-teal, #008080);
+    color: #fff;
+    font-size: 0.8rem;
+    padding: 6px 14px;
+}
+.btn-skip:disabled { opacity: 0.4; cursor: default; }
+
+/* Zoom controls */
+.zoom-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    padding: 6px 12px;
+    background: #f0f4f8;
+    border: 1px solid #dde3ea;
+}
+.zoom-icon {
+    font-size: 1.1rem;
+    color: var(--subtext-color);
+}
+.zoom-circle-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid var(--metro-blue);
+    background: #fff;
+    color: var(--metro-blue);
+    font-size: 1.2rem;
+    font-weight: bold;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s, color 0.15s;
+}
+.zoom-circle-btn:hover { background: var(--metro-blue); color: #fff; }
+.zoom-slider {
+    width: 160px;
+    accent-color: var(--metro-blue);
+    cursor: pointer;
+}
+.zoom-label {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--metro-blue);
+    min-width: 44px;
+    text-align: center;
+}
+.zoom-reset-btn {
+    border: 1px solid #aaa;
+    background: #fff;
+    color: #555;
+    font-size: 0.8rem;
+    padding: 4px 10px;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: background 0.15s;
+}
+.zoom-reset-btn:hover { background: #eee; }
+
+/* Item legend panel (x1–xN mapping) */
+.item-legend-panel { margin-top: 0; }
+.item-legend-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 6px 16px;
+    margin-top: 6px;
+}
+.legend-var-item {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+    font-size: 0.85rem;
+    padding: 4px 8px;
+    background: #f5f8fb;
+    border-left: 3px solid var(--metro-blue);
+}
+.legend-var-name {
+    font-weight: 700;
+    color: var(--metro-blue);
+    min-width: 22px;
+}
+.legend-var-eq { color: #777; }
+.legend-var-label {
+    font-weight: 600;
+    color: #222;
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.legend-var-detail {
+    color: var(--subtext-color);
+    font-size: 0.78rem;
+    white-space: nowrap;
+}
+
 /* Stats & result items reveal at final step */
 .result-stats-hidden {
     display: none !important;

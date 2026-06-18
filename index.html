@@ -142,11 +142,26 @@
                         <button id="stepBackBtn" class="metro-btn btn-secondary" onclick="stepBack()">&#8592; Sebelumnya</button>
                         <span id="stepIndicator" class="step-indicator">Node 1 dari —</span>
                         <button id="stepNextBtn" class="metro-btn" onclick="stepForward()">Selanjutnya &#8594;</button>
+                        <button id="stepEndBtn" class="metro-btn btn-skip" onclick="skipToEnd()" title="Langsung ke solusi akhir">&#9654;&#9654; Solusi</button>
+                    </div>
+
+                    <div class="zoom-controls">
+                        <span class="zoom-icon">&#128269;</span>
+                        <button class="zoom-circle-btn" onclick="zoomOut()" title="Zoom Out">&#8722;</button>
+                        <input type="range" id="zoomSlider" class="zoom-slider" min="30" max="300" value="100" step="10" oninput="setZoom(this.value)">
+                        <button class="zoom-circle-btn" onclick="zoomIn()" title="Zoom In">&#43;</button>
+                        <span id="zoomLabel" class="zoom-label">100%</span>
+                        <button class="zoom-reset-btn" onclick="resetZoom()" title="Reset Zoom">&#8635; Reset</button>
                     </div>
 
                     <div class="tree-container-wrapper">
                         <div id="treeContainer"></div>
                     </div>
+                </section>
+
+                <section id="itemLegendPanel" class="metro-panel item-legend-panel">
+                    <div class="panel-title">Keterangan Variabel Keputusan</div>
+                    <div id="itemLegendGrid" class="item-legend-grid"></div>
                 </section>
 
                 <section id="resultStatsPanel" class="results-dashboard result-stats-hidden" style="grid-template-columns: repeat(2, 1fr);">
