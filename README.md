@@ -1,29 +1,25 @@
-# Knapsack 0/1 DFS Backtracking
+# Knapsack 0/1 Backtracking Visualizer
 
-File ini berisi implementasi sederhana Knapsack 0/1 menggunakan recursive DFS, pruning sederhana, dan statistik eksekusi.
+Aplikasi web sederhana untuk memvisualisasikan penyelesaian permasalahan Knapsack 0/1 menggunakan algoritma DFS backtracking dengan pruning bound.
 
 ## Cara Menjalankan
 
-Pastikan Node.js sudah terpasang, lalu jalankan:
-
-```bash
-node js/knapsack.js
-```
+Tidak perlu instalasi apa pun. Cukup buka file `index.html` langsung di browser (cara termudah: klik dua kali file tersebut, atau klik kanan lalu pilih "Open with" browser pilihan Anda).
 
 ## Isi Program
 
-Program mengambil input dari pengguna secara interaktif melalui konsol saat dijalankan. Pengguna akan diminta untuk memasukkan:
-- Kapasitas maksimal Knapsack
-- Jumlah barang
-- Atribut detail setiap barang berupa nama, berat, dan profit
+Melalui antarmuka web, pengguna dapat:
+- Mengatur kapasitas maksimal Knapsack
+- Menambah/mengedit barang (nama, berat, profit) atau memilih preset soal
+- Menjalankan visualisasi pohon DFS backtracking secara interaktif
 
 ## Output
 
-Saat dijalankan, program menampilkan:
+Aplikasi menampilkan:
 - daftar barang
+- visualisasi pohon pencarian (tree visualizer)
 - kombinasi optimal
-- total berat
-- total profit maksimum
+- total berat dan total profit maksimum
 - jumlah node yang dikunjungi
 - waktu eksekusi
 
@@ -33,6 +29,12 @@ Pruning yang dipakai ada dua:
 - berhenti jika berat melebihi kapasitas
 - berhenti jika profit terbaik yang mungkin dari sisa item tidak bisa mengalahkan solusi terbaik saat ini
 
+## Struktur Project
+
+- `index.html` — entry point, langsung dijalankan di browser
+- `css/` — styling (main, layout, components, tree)
+- `js/` — logika aplikasi (`app.js`, `knapsack.js`, `presets.js`, `scenes.js`, `tree-visualizer.js`)
+
 ## Catatan
 
-Implementasi dibuat sesederhana mungkin agar mudah dipahami mahasiswa dan langsung bisa diuji dari console.
+Implementasi dibuat sesederhana mungkin agar mudah dipahami mahasiswa dan langsung bisa diuji dari browser tanpa server atau dependensi tambahan.
